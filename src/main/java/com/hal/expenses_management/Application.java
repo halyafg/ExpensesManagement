@@ -21,7 +21,7 @@ public class Application {
 
         while(true){
 
-            System.out.print("\nAvailable commands: " + Arrays.toString(Commands.values()) + ". \nInput your command: \n>>  ");
+            System.out.print("\nAvailable commands: " + Arrays.toString(Commands.values()) + ".\n>>  ");
 
             String message = scanner.nextLine();
 
@@ -39,7 +39,9 @@ public class Application {
             }else
                 if(message.toUpperCase().startsWith(String.valueOf(Commands.TOTAL))){
                     Methods.outputTotalAmountInCurrency(purchaseMap, message);
-            }
+            }else
+                    System.out.println("Wrong Command! Try again ;-)");
+
 
         }
 
