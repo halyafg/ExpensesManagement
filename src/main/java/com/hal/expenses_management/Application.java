@@ -1,6 +1,7 @@
 package com.hal.expenses_management;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Personal expenses management console application that allows
@@ -17,31 +18,41 @@ public class Application {
         System.out.println("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
 
         Scanner scanner = new Scanner(System.in);
-        Map<String, List<Purchase>> purchaseMap= new TreeMap<>();
+        Expenses expenses = new Expenses();
 
         while(true){
 
             System.out.print("\nAvailable commands: " + Arrays.toString(Commands.values()) + ".\n>>  ");
 
-            String message = scanner.nextLine();
+            String[] commandFromUser = scanner.nextLine().split(" ");
 
-            if(message.equalsIgnoreCase(String.valueOf(Commands.EXIT))){
+            String command = commandFromUser[0];
+
+
+            if(command.toUpperCase().equalsIgnoreCase(String.valueOf(Commands.EXIT)) && commandFromUser.length == 1){
+
                 break;
-            }else
-                if(message.toUpperCase().startsWith(String.valueOf(Commands.ADD))){
-                    Methods.addPurchase(purchaseMap, message);
-            }else
-                if(message.toUpperCase().startsWith(String.valueOf(Commands.LIST))){
-                    Methods.outputPurchaseMap(purchaseMap);
-            }else
-                if(message.toUpperCase().startsWith(String.valueOf(Commands.CLEAR))){
-                    Methods.deletePurchase(purchaseMap, message);
-            }else
-                if(message.toUpperCase().startsWith(String.valueOf(Commands.TOTAL))){
-                    Methods.outputTotalAmountInCurrency(purchaseMap, message);
-            }else
-                    System.out.println("Wrong Command! Try again ;-)");
 
+            }else if(command.equalsIgnoreCase(String.valueOf(Commands.ADD))){
+
+                expenses.addPurchase(commandFromUser);
+
+            }else if (command.toUpperCase().equalsIgnoreCase(String.valueOf(Commands.LIST)) && commandFromUser.length == 1){
+
+                expenses.outputPurchaseMap();
+
+            }else if(command.toUpperCase().startsWith(String.valueOf(Commands.CLEAR))){
+
+                expenses.deletePurchase(commandFromUser);
+
+            }else if(command.toUpperCase().startsWith(String.valueOf(Commands.TOTAL))){
+
+                expenses.outputTotalAmountInCurrency(commandFromUser);
+
+            }else{
+
+                System.out.println("Wrong Command! Try again ;-)");
+            }
 
         }
 
