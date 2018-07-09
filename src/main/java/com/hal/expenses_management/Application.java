@@ -3,6 +3,9 @@ package com.hal.expenses_management;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static com.hal.expenses_management.Commands.*;
+import static java.lang.String.valueOf;
+
 /**
  * Personal expenses management console application that allows
  * users to track how much money have they spent.
@@ -22,22 +25,21 @@ public class Application {
 
         while (true) {
 
-            System.out.print("\nAvailable commands: " + Arrays.toString(Commands.values()) + ".\n>>  ");
+            System.out.print("\nAvailable commands: " + Arrays.toString(values()) + ".\n>>  ");
 
             String[] commandFromUser = scanner.nextLine().split(" ");
 
-            String command = commandFromUser[0];
+            String command = commandFromUser[0].toUpperCase();
 
-
-            if (command.equalsIgnoreCase(String.valueOf(Commands.EXIT)) && commandFromUser.length == 1) {
+            if (command.equals(valueOf(EXIT)) && commandFromUser.length == 1) {
                 break;
-            } else if (command.equalsIgnoreCase(String.valueOf(Commands.ADD))) {
+            } else if (command.equals(valueOf(ADD))) {
                 expenses.addPurchase(commandFromUser);
-            } else if (command.equalsIgnoreCase(String.valueOf(Commands.LIST)) && commandFromUser.length == 1) {
+            } else if (command.equals(valueOf(LIST)) && commandFromUser.length == 1) {
                 expenses.outputPurchaseMap();
-            } else if (command.toUpperCase().startsWith(String.valueOf(Commands.CLEAR))) {
+            } else if (command.equals(valueOf(CLEAR))) {
                 expenses.deletePurchase(commandFromUser);
-            } else if (command.toUpperCase().startsWith(String.valueOf(Commands.TOTAL))) {
+            } else if (command.equals(valueOf(TOTAL))) {
                 expenses.outputTotalAmountInCurrency(commandFromUser);
             } else {
                 System.out.println("Wrong Command! Try again ;-)");

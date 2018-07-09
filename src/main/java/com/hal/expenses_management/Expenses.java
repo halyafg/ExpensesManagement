@@ -11,6 +11,7 @@ public class Expenses {
 
     public Expenses() {
         this.purchaseMap = new TreeMap<>();
+//        this.purchaseMap = new HashMap<>();
     }
 
     private final static int NUMBER_OF_ELEMENTS_IN_ADD_COMMAND = 5;
@@ -35,11 +36,8 @@ public class Expenses {
             return;
         }
 
-        if (purchaseMap.containsKey(purchase.getDate())) {
-            purchaseMap.get(purchase.getDate()).add(purchase);
-        } else {
-            purchaseMap.put(purchase.getDate(), new ArrayList<>(Collections.singletonList(purchase)));
-        }
+        purchaseMap.putIfAbsent(purchase.getDate(), new ArrayList<>());
+        Objects.requireNonNull(purchaseMap.putIfAbsent(purchase.getDate(), new ArrayList<>())).add(purchase);
 
         outputPurchaseMap();
 
