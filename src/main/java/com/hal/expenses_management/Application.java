@@ -20,7 +20,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
         Expenses expenses = new Expenses();
 
-        while(true){
+        while (true) {
 
             System.out.print("\nAvailable commands: " + Arrays.toString(Commands.values()) + ".\n>>  ");
 
@@ -29,28 +29,17 @@ public class Application {
             String command = commandFromUser[0];
 
 
-            if(command.toUpperCase().equalsIgnoreCase(String.valueOf(Commands.EXIT)) && commandFromUser.length == 1){
-
+            if (command.equalsIgnoreCase(String.valueOf(Commands.EXIT)) && commandFromUser.length == 1) {
                 break;
-
-            }else if(command.equalsIgnoreCase(String.valueOf(Commands.ADD))){
-
+            } else if (command.equalsIgnoreCase(String.valueOf(Commands.ADD))) {
                 expenses.addPurchase(commandFromUser);
-
-            }else if (command.toUpperCase().equalsIgnoreCase(String.valueOf(Commands.LIST)) && commandFromUser.length == 1){
-
+            } else if (command.equalsIgnoreCase(String.valueOf(Commands.LIST)) && commandFromUser.length == 1) {
                 expenses.outputPurchaseMap();
-
-            }else if(command.toUpperCase().startsWith(String.valueOf(Commands.CLEAR))){
-
+            } else if (command.toUpperCase().startsWith(String.valueOf(Commands.CLEAR))) {
                 expenses.deletePurchase(commandFromUser);
-
-            }else if(command.toUpperCase().startsWith(String.valueOf(Commands.TOTAL))){
-
+            } else if (command.toUpperCase().startsWith(String.valueOf(Commands.TOTAL))) {
                 expenses.outputTotalAmountInCurrency(commandFromUser);
-
-            }else{
-
+            } else {
                 System.out.println("Wrong Command! Try again ;-)");
             }
 

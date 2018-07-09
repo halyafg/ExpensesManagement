@@ -1,7 +1,6 @@
 package com.hal.expenses_management;
 
 import com.google.gson.Gson;
-import com.hal.expenses_management.CurrencyConversionResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,28 +12,28 @@ import java.net.URL;
  *
  * @author Halyna Hoy
  */
-class Converter {
+public class Converter {
 
     /**
      * this method gets specified currency's rate to Euro
      * using MY PERSONAL temporary key (can use the key up to 05.08.2018) from http://fixer.io.
      *
-     * @param CurrencyCode - currency's cod (three letters) in ISO 4217
-     * @return  - rate of 'CurrencyCode'  to EUR
+     * @param currencyCode - currency's cod (three letters) in ISO 4217
+     * @return - rate of 'currencyCode'  to EUR
      */
-    public static double convertToBaseEUR(String CurrencyCode) {
+    public static double convertToBaseEUR(String currencyCode) {
 
         // API Provider URL
         final String API_PROVIDER = "http://data.fixer.io/api/latest?access_key=39adb84486efcfa03b4064fa6a0b9441&format=1";
 
         double conversionRate = 0;
 
-        if ( CurrencyCode != null && !CurrencyCode.isEmpty()) {
+        if (currencyCode != null && !currencyCode.isEmpty()) {
 
             CurrencyConversionResponse response = getResponseFromUrl(API_PROVIDER);
 
-            if(response != null) {
-                String rate = response.getRates().get(CurrencyCode);
+            if (response != null) {
+                String rate = response.getRates().get(currencyCode);
                 conversionRate = Double.valueOf((rate != null) ? rate : "0.0");
             }
         }
@@ -54,7 +53,7 @@ class Converter {
         Gson gson = new Gson();
         StringBuilder sb = new StringBuilder();
 
-        if(strUrl == null || strUrl.isEmpty()) {
+        if (strUrl == null || strUrl.isEmpty()) {
 
             System.out.println("Application Error");
             return null;

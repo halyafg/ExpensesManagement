@@ -3,9 +3,7 @@ package com.hal.expenses_management;
 import java.util.*;
 
 /**
- *
  * @author Halyna Hoy
- *
  */
 public class Expenses {
 
@@ -15,7 +13,7 @@ public class Expenses {
         this.purchaseMap = new TreeMap<>();
     }
 
-    final static int NUMBER_OF_ELEMENTS_IN_ADD_COMMAND = 5;
+    private final static int NUMBER_OF_ELEMENTS_IN_ADD_COMMAND = 5;
 
     public Map<String, List<Purchase>> getPurchaseMap() {
         return purchaseMap;
@@ -30,14 +28,16 @@ public class Expenses {
      *
      * @param message - message from user in console
      */
-    void addPurchase(String[] message){
+    public void addPurchase(String[] message) {
 
-        Purchase purchase = getPurchase(message);
-        if(purchase == null) return;
+        Purchase purchase = extractPurchase(message);
+        if (purchase == null) {
+            return;
+        }
 
-        if(purchaseMap.containsKey(purchase.getDate())){
+        if (purchaseMap.containsKey(purchase.getDate())) {
             purchaseMap.get(purchase.getDate()).add(purchase);
-        }else{
+        } else {
             purchaseMap.put(purchase.getDate(), new ArrayList<>(Collections.singletonList(purchase)));
         }
 
@@ -51,9 +51,9 @@ public class Expenses {
      * @param message - message from user in console
      * @return new Purchase
      */
-    Purchase getPurchase (String[] message){
+    public Purchase extractPurchase(String[] message) {
 
-        if(message.length < NUMBER_OF_ELEMENTS_IN_ADD_COMMAND) {
+        if (message.length < NUMBER_OF_ELEMENTS_IN_ADD_COMMAND) {
             return null;
         }
 
@@ -62,7 +62,7 @@ public class Expenses {
         double amount = 0;
         try {
             amount = Double.parseDouble(message[2]);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Wrong amount: " + message[2]);
         }
 
@@ -81,9 +81,9 @@ public class Expenses {
      *
      * @param message - message from user in console
      */
-    void deletePurchase(String[] message){
+    public void deletePurchase(String[] message) {
 
-        if(message.length > 1){
+        if (message.length > 1) {
             String date = message[1];
             purchaseMap.remove(date);
         }
@@ -96,10 +96,10 @@ public class Expenses {
      *
      * @param message - message from user in console
      */
-    void outputTotalAmountInCurrency(String[] message){
+    public void outputTotalAmountInCurrency(String[] message) {
 
         //get specified currency from message
-        if(message.length == 1){
+        if (message.length == 1) {
             System.out.println("Input: TOTAL currencyCOD");
             return;
         }
@@ -110,8 +110,8 @@ public class Expenses {
         double counter = 0;
 
         //calculates the total amount in specified currency
-        for(Map.Entry<String, List<Purchase>> item: purchaseMap.entrySet()){
-            for (Purchase purchase: item.getValue()) {
+        for (Map.Entry<String, List<Purchase>> item : purchaseMap.entrySet()) {
+            for (Purchase purchase : item.getValue()) {
 
                 double rate = Converter.convertToBaseEUR(purchase.getCurrency().toUpperCase());
                 if (rate == 0) {
@@ -119,22 +119,22 @@ public class Expenses {
                     continue;
                 }
 
-                counter += RateOfSpecifiedCurrency/rate * purchase.getAmount();
+                counter += RateOfSpecifiedCurrency / rate * purchase.getAmount();
             }
         }
 
-        System.out.printf("\t%.2f %s" , counter, specifiedCurrency.toUpperCase());
+        System.out.printf("\t%.2f %s", counter, specifiedCurrency.toUpperCase());
     }
 
 
     /**
      * output the list of all expenses sorted by date
      */
-    void outputPurchaseMap(){
+    public void outputPurchaseMap() {
 
         purchaseMap.forEach((k, v) -> {
             System.out.println("\n\t" + k);
-            v.forEach( p -> System.out.println("\t" + p));
+            v.forEach(p -> System.out.println("\t" + p));
         });
 
     }

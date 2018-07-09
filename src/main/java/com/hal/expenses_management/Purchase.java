@@ -1,5 +1,7 @@
 package com.hal.expenses_management;
 
+import java.util.Objects;
+
 /**
  * Simple object that represents purchase for user.
  *
@@ -59,5 +61,26 @@ public class Purchase {
     public String toString() {
         return productName + " " + amount + " " + currency;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Purchase)) {
+            return false;
+        }
+        Purchase purchase = (Purchase) o;
+        return Double.compare(purchase.amount, amount) == 0 &&
+                Objects.equals(date, purchase.date) &&
+                Objects.equals(currency, purchase.currency) &&
+                Objects.equals(productName, purchase.productName);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(date, amount, currency, productName);
     }
 }
