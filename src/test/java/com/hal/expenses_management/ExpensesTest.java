@@ -1,5 +1,6 @@
 package com.hal.expenses_management;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -41,6 +42,18 @@ public class ExpensesTest {
     }
 
     @Test
+    public void testExtractDate() {
+        Expenses expenses = new Expenses();
+        String stringDate = "2017-04-25";
+
+        Date actualDate = expenses.extractDate(stringDate);
+        Date expectedDate = new GregorianCalendar(2017, Calendar.APRIL, 25).getTime();
+
+        assertEquals(expectedDate, actualDate);
+
+    }
+
+    @Test
     public void testExtractPurchase() {
 
         Expenses expenses = new Expenses();
@@ -67,6 +80,30 @@ public class ExpensesTest {
         expenses.deletePurchase(message2);
 
         assertTrue(expenses.getPurchaseMap().isEmpty());
+
+    }
+
+    /**
+     * the result of this test depends on actual rate of some currencies (12.07.2017 it ran well)
+     * that's why it's marked as @Ignore
+     */
+    @Test
+    @Ignore
+    public void testGetTotalAmountInCurrency() {
+        Expenses expenses = new Expenses();
+        String[] message1 = "add 2017-04-25 2 USD Jogurt".split(" ");
+        String[] message2 = "add 2017-04-25 3 EUR “French fries”".split(" ");
+        String[] message3 = "add 2017-04-26 2.5 PLN Sweets".split(" ");
+        String[] message4 = "total EUR".split(" ");
+        double expectedTotal = 5.42;
+
+        expenses.addPurchase(message1);
+        expenses.addPurchase(message2);
+        expenses.addPurchase(message3);
+
+        double actualTotal = expenses.getTotalAmountInSpecifiedCurrency(message4);
+
+        assertEquals(expectedTotal, actualTotal, 0.2);
 
     }
 

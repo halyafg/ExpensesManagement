@@ -15,7 +15,6 @@ public class Expenses {
 
     public Expenses() {
         this.purchaseMap = new TreeMap<>();
-//        this.purchaseMap = new HashMap<>();
     }
 
     private final static int NUMBER_OF_ELEMENTS_IN_ADD_COMMAND = 5;
@@ -33,17 +32,17 @@ public class Expenses {
      *
      * @param message - message from user in console
      */
-    public void addPurchase(String[] message) {
+    public Map<Date, List<Purchase>> addPurchase(String[] message) {
 
         Purchase purchase = extractPurchase(message);
         if (purchase == null) {
-            return;
+            return null;
         }
 
         purchaseMap.putIfAbsent(purchase.getDate(), new ArrayList<>());
         Objects.requireNonNull(purchaseMap.putIfAbsent(purchase.getDate(), new ArrayList<>())).add(purchase);
 
-        outputPurchaseMap();
+        return purchaseMap;
 
     }
 
@@ -100,14 +99,14 @@ public class Expenses {
      *
      * @param message - message from user in console
      */
-    public void deletePurchase(String[] message) {
+    public Map<Date, List<Purchase>> deletePurchase(String[] message) {
 
         if (message.length > 1) {
             Date date = extractDate(message[1]);
             purchaseMap.remove(date);
         }
 
-        outputPurchaseMap();
+        return purchaseMap;
     }
 
     /**
@@ -115,17 +114,16 @@ public class Expenses {
      *
      * @param message - message from user in console
      */
-    public void outputTotalAmountInCurrency(String[] message) {
+    public double getTotalAmountInSpecifiedCurrency(String[] message) {
 
         //get specified currency from message
         if (message.length == 1) {
-            System.out.println("Input: TOTAL currencyCOD");
-            return;
+//            System.out.println("Input: TOTAL currencyCOD");
+            return 0.0;
         }
         String specifiedCurrency = message[1];
 
         double RateOfSpecifiedCurrency = Converter.convertToBaseEUR(specifiedCurrency.toUpperCase());
-
         double counter = 0;
 
         //calculates the total amount in specified currency
@@ -134,7 +132,8 @@ public class Expenses {
 
                 double rate = Converter.convertToBaseEUR(purchase.getCurrency().toUpperCase());
                 if (rate == 0) {
-                    System.out.println("No such currency according to ISO: " + purchase.getCurrency());
+                    ConsoleOutput console = new ConsoleOutputImpl();
+                    console.printLine("No such currency according to ISO: " + purchase.getCurrency() + "\n");
                     continue;
                 }
 
@@ -142,22 +141,8 @@ public class Expenses {
             }
         }
 
-        System.out.printf("\t%.2f %s", counter, specifiedCurrency.toUpperCase());
-    }
-
-
-    /**
-     * output the list of all expenses sorted by date
-     */
-    public void outputPurchaseMap() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        purchaseMap.forEach((k, v) -> {
-            System.out.println("\n\t" + sdf.format(k));
-            v.forEach(p -> System.out.println("\t" + p));
-        });
-
+        counter = (double) (Math.round(counter * 100)) / 100;
+        return counter;
     }
 
 }
