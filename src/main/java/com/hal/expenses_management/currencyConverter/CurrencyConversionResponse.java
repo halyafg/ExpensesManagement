@@ -1,4 +1,4 @@
-package com.hal.expenses_management;
+package com.hal.expenses_management.currencyConverter;
 
 import java.util.Map;
 import java.util.TreeMap;

@@ -1,5 +1,9 @@
 package com.hal.expenses_management;
 
+import com.hal.expenses_management.currencyConverter.Converter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -7,7 +11,7 @@ import java.util.*;
  */
 public class Expenses {
 
-    private Map<String, List<Purchase>> purchaseMap;
+    private Map<Date, List<Purchase>> purchaseMap;
 
     public Expenses() {
         this.purchaseMap = new TreeMap<>();
@@ -16,11 +20,11 @@ public class Expenses {
 
     private final static int NUMBER_OF_ELEMENTS_IN_ADD_COMMAND = 5;
 
-    public Map<String, List<Purchase>> getPurchaseMap() {
+    public Map<Date, List<Purchase>> getPurchaseMap() {
         return purchaseMap;
     }
 
-    public void setPurchaseMap(Map<String, List<Purchase>> purchaseMap) {
+    public void setPurchaseMap(Map<Date, List<Purchase>> purchaseMap) {
         this.purchaseMap = purchaseMap;
     }
 
@@ -55,7 +59,7 @@ public class Expenses {
             return null;
         }
 
-        String date = message[1];
+        Date date = extractDate(message[1]);
 
         double amount = 0;
         try {
@@ -75,6 +79,23 @@ public class Expenses {
     }
 
     /**
+     * @param stringDate -  part of message from user, where must be date of purchase
+     * @return - java.util.Date - date of purchase
+     */
+    public Date extractDate(String stringDate) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = sdf.parse(stringDate);
+        } catch (ParseException e) {
+            System.out.println("Input date mus be: yyyy-mm-dd");
+            return null;
+        }
+        return date;
+    }
+
+    /**
      * this method removes all expenses for specified date.
      *
      * @param message - message from user in console
@@ -82,7 +103,7 @@ public class Expenses {
     public void deletePurchase(String[] message) {
 
         if (message.length > 1) {
-            String date = message[1];
+            Date date = extractDate(message[1]);
             purchaseMap.remove(date);
         }
 
@@ -108,7 +129,7 @@ public class Expenses {
         double counter = 0;
 
         //calculates the total amount in specified currency
-        for (Map.Entry<String, List<Purchase>> item : purchaseMap.entrySet()) {
+        for (Map.Entry<Date, List<Purchase>> item : purchaseMap.entrySet()) {
             for (Purchase purchase : item.getValue()) {
 
                 double rate = Converter.convertToBaseEUR(purchase.getCurrency().toUpperCase());
@@ -130,8 +151,10 @@ public class Expenses {
      */
     public void outputPurchaseMap() {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         purchaseMap.forEach((k, v) -> {
-            System.out.println("\n\t" + k);
+            System.out.println("\n\t" + sdf.format(k));
             v.forEach(p -> System.out.println("\t" + p));
         });
 

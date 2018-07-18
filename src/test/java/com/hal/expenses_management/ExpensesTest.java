@@ -2,10 +2,7 @@ package com.hal.expenses_management;
 
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -19,8 +16,9 @@ public class ExpensesTest {
 
         expenses.addPurchase(message);
 
-        Map<String, List<Purchase>> expectedMap = new TreeMap<>();
-        expectedMap.put("2017-04-25", Collections.singletonList(new Purchase("2017-04-25", 3, "EUR", "“French fries”")));
+        Map<Date, List<Purchase>> expectedMap = new TreeMap<>();
+        Date date = new GregorianCalendar(2017, Calendar.APRIL, 25).getTime();
+        expectedMap.put(date, Collections.singletonList(new Purchase(date, 3, "EUR", "“French fries”")));
 
         assertEquals(expectedMap, expenses.getPurchaseMap());
     }
@@ -49,7 +47,8 @@ public class ExpensesTest {
         String[] message = "add 2017-04-25 3 EUR “French fries”".split(" ");
 
         Purchase actual = expenses.extractPurchase(message);
-        Purchase expected = new Purchase("2017-04-25", 3, "EUR", "“French fries”");
+        Date date = new GregorianCalendar(2017, Calendar.APRIL, 25).getTime();
+        Purchase expected = new Purchase(date, 3, "EUR", "“French fries”");
 
         assertEquals(expected, actual);
     }

@@ -1,4 +1,4 @@
-package com.hal.expenses_management;
+package com.hal.expenses_management.currencyConverter;
 
 import com.google.gson.Gson;
 
@@ -44,7 +44,7 @@ public class Converter {
      * get response from http://fixer.io
      *
      * @param strUrl - Url of API http://fixer.io ........
-     * @return - an instance of CurrencyConversionResponse {@link com.hal.expenses_management.CurrencyConversionResponse}.
+     * @return - an instance of CurrencyConversionResponse {@link CurrencyConversionResponse}.
      */
     private static CurrencyConversionResponse getResponseFromUrl(String strUrl) {
 

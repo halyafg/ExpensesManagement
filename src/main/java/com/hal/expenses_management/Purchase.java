@@ -1,5 +1,6 @@
 package com.hal.expenses_management;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 public class Purchase {
 
-    private String date;
+    private Date date;
     private double amount;
     private String currency;
     private String productName;
@@ -18,18 +19,18 @@ public class Purchase {
     public Purchase() {
     }
 
-    public Purchase(String date, double amount, String currency, String productName) {
+    public Purchase(Date date, double amount, String currency, String productName) {
         this.date = date;
         this.amount = amount;
         this.currency = currency;
         this.productName = productName;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
